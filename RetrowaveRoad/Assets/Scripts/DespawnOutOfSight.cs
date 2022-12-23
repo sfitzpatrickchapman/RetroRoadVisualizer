@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class DespawnOutOfSight : MonoBehaviour
 {
+    public bool isEnabled = true;
+
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        if (isEnabled) Destroy(gameObject);
     }
 }

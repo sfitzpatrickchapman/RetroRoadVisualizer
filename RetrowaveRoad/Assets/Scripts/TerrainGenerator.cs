@@ -38,9 +38,9 @@ public class TerrainGenerator : MonoBehaviour
     private GameObject vertSpheres;
     private GameObject lineCylinders;
 
-    private int curZLen;
     private int vert;
-    private float zEndPos;
+    private int backVertZPos;
+    private int frontVertZPos;
 
 
     /* TODO:
@@ -73,11 +73,35 @@ public class TerrainGenerator : MonoBehaviour
         // Init mesh
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        backVertZPos = zSize;
+        frontVertZPos = 0;
         InitTerrain();
+    }
 
-        // Set z-axis length trackers
-        curZLen = zSize;
-        zEndPos = transform.TransformPoint(vertices[vertices.Count - 1]).z;
+    void Update()
+    {
+        if (testValuesRealtime)
+            InitTerrain(); //ONLY USE THIS IN UPDATE FOR TESTING VARS
+
+        // TRANSFORM CAMERA (fowards) ---
+        Vector3 camPos = Camera.main.transform.position;
+        camPos.z += Time.deltaTime * speed;
+        Camera.main.transform.position = camPos;
+
+
+
+        // GENERATE/DEGENERATE TERRAIN ---
+        // If the camera is 1 in front of cur vert on z-axis
+        if (Camera.main.transform.position.z - 1f > vertices[frontVertZPos].z)
+        {
+            GenerateNewTerrain();
+            DegenerateTerrain();
+
+            backVertZPos++;
+            frontVertZPos += xSize;
+        }
+
+        UpdateMesh();
     }
 
     void InitTerrain()
@@ -129,14 +153,12 @@ public class TerrainGenerator : MonoBehaviour
 
     void GenerateNewTerrain()
     {
-        curZLen++;
-
         // ADD NEW VERTS
         Vector3 prevPos = Vector3.zero;
         for (int x = 0; x <= xSize; x++)
         {
-            float y = CalculateHeight(x, curZLen);
-            Vector3 newPos = new Vector3(x, y, curZLen);
+            float y = CalculateHeight(x, backVertZPos);
+            Vector3 newPos = new Vector3(x, y, backVertZPos);
             vertices.Add(newPos);
 
             if (visualizeVerts)
@@ -186,25 +208,7 @@ public class TerrainGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
     }
 
-    void Update()
-    {
-        if (testValuesRealtime)
-            InitTerrain(); //ONLY USE THIS IN UPDATE FOR TESTING VARS
-
-        // TRANSFORM TERRAIN (towards camera) ---
-        Vector3 curPos = transform.position;
-        curPos.z -= Time.deltaTime * speed;
-        transform.position = curPos;
-
-        // GENERATE NEW TERRAIN ---
-        if (zEndPos > transform.TransformPoint(vertices[vertices.Count - 1]).z)
-        {
-            GenerateNewTerrain();
-            DegenerateTerrain();
-        }
-
-        UpdateMesh();
-    }
+    
 
     float CalculateHeight(int x, int z)
     {
