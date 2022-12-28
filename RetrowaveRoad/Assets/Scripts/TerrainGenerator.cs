@@ -38,6 +38,12 @@ public class TerrainGenerator : MonoBehaviour
     private GameObject vertSpheres;
     private GameObject lineCylinders;
 
+    private GameObject sphereContainer;
+    private GameObject cylinderContainer;
+    //private GameObject[] vertSphereBatch;
+    //private GameObject[] lineCylinderBatch;
+
+
     private int vert;
     private int backVertZPos;
     private int frontVertZPos;
@@ -45,8 +51,12 @@ public class TerrainGenerator : MonoBehaviour
 
     /* TODO:
      * 
-     * -Optimize
+     * Make terrain receive emission and not shadows
+     * -Optimize:
+     *   -Add newly generated objects to batches at runtime
+     *   -Delay mesh spawning
      * -Add wireframe lines
+     * -Make camera script. Move it from there.
      * -Adjust terrain shader
      * -Add sun and HDRI sky
      * -Re-color
@@ -64,18 +74,35 @@ public class TerrainGenerator : MonoBehaviour
         vertSpheres = new GameObject();
         vertSpheres.name = "Vertices";
         vertSpheres.transform.parent = transform;
-
+        vertSpheres.isStatic = true;
+        
         // Create child GO for grandparent line cylinders
         lineCylinders = new GameObject();
         lineCylinders.name = "Lines";
         lineCylinders.transform.parent = transform;
-
+        lineCylinders.isStatic = true;
+        
         // Init mesh
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
         backVertZPos = zSize;
         frontVertZPos = 0;
         InitTerrain();
+
+        StaticBatchingUtility.Combine(vertSpheres);
+        StaticBatchingUtility.Combine(lineCylinders);
+
+        //// Create batch container for verts
+        //sphereContainer = new GameObject();
+        //sphereContainer.name = "VertContainer";
+        //sphereContainer.isStatic = true;
+        //StaticBatchingUtility.Combine(ChildrenToArray(vertSpheres), sphereContainer);
+
+        //// Create batch container for cylinders
+        //cylinderContainer = new GameObject();
+        //cylinderContainer.name = "VertContainer";
+        //cylinderContainer.isStatic = true;
+        //StaticBatchingUtility.Combine(ChildrenToArray(lineCylinders), cylinderContainer);
     }
 
     void Update()
@@ -89,10 +116,9 @@ public class TerrainGenerator : MonoBehaviour
         Camera.main.transform.position = camPos;
 
 
-
         // GENERATE/DEGENERATE TERRAIN ---
-        // If the camera is 1 in front of cur vert on z-axis
-        if (Camera.main.transform.position.z - 1f > vertices[frontVertZPos].z)
+        // If the camera is 5 in front of cur vert on z-axis
+        if (Camera.main.transform.position.z - 5f > vertices[frontVertZPos].z)
         {
             GenerateNewTerrain();
             DegenerateTerrain();
@@ -121,7 +147,9 @@ public class TerrainGenerator : MonoBehaviour
                 if (visualizeVerts)
                     VisualizeVert(new Vector3(x, y, z));
 
-                if (visualizeLines && x > 0)
+
+                //float distFromCam = Vector3.Distance(newPos, Camera.main.transform.position);
+                if (visualizeLines && x > 0)// && distFromCam < 100)
                     VisualizeLine(newPos, prevPos);
 
                 prevPos = newPos;
@@ -164,7 +192,8 @@ public class TerrainGenerator : MonoBehaviour
             if (visualizeVerts)
                 VisualizeVert(newPos);
 
-            if (visualizeLines && x > 0)
+            //float distFromCam = Vector3.Distance(newPos, Camera.main.transform.position);
+            if (visualizeLines && x > 0)// && distFromCam < 100)
                 VisualizeLine(newPos, prevPos);
 
             prevPos = newPos;
@@ -242,6 +271,9 @@ public class TerrainGenerator : MonoBehaviour
         curSphere.transform.parent = vertSpheres.transform;
         curSphere.transform.position = pos;
         curSphere.transform.localScale = new Vector3(vertScale, vertScale, vertScale);
+
+        //GameObject[] test = new GameObject[] { curSphere };
+        //StaticBatchingUtility.Combine(test, vertSpheres);
     }
 
     void VisualizeLine(Vector3 posA, Vector3 posB)
@@ -256,9 +288,25 @@ public class TerrainGenerator : MonoBehaviour
         Vector3 middlePoint = (posA + posB) / 2f;
         curLine.transform.position = middlePoint;
 
-        Vector3 rotationDirection = (posA - posB);
+        Vector3 rotationDirection = posA - posB;
         curLine.transform.up = rotationDirection;
+
+        //GameObject[] test = new GameObject[] { curLine };
+        //StaticBatchingUtility.Combine(test, lineCylinders);
 
         // Reference: https://www.youtube.com/watch?v=K-Nckj9tppM
     }
+
+    //GameObject[] ChildrenToArray(GameObject parent)
+    //{
+    //    Debug.Log(Time.time);
+    //    Transform[] childrenTrans = parent.GetComponentsInChildren<Transform>();
+    //    GameObject[] children = new GameObject[childrenTrans.Length];
+
+    //    for (int i = 0; i < childrenTrans.Length; i++)
+    //        children[i] = childrenTrans[i].gameObject;
+
+    //    Debug.Log(Time.time);
+    //    return children;
+    //}
 }
