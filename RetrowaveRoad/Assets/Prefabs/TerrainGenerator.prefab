@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5761458534462343474
 Transform:
@@ -54,15 +54,15 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
+  m_RenderingLayerMask: 3
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5da345020dafbd84da548319012b384a, type: 2}
+  - {fileID: 2100000, guid: 7e37511c8f3475b42b09f0c2e655d997, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -70,7 +70,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -101,17 +101,19 @@ MonoBehaviour:
   scale: 0.399
   height: 3.27
   sharpness: 2.62
-  valleyShift: 9.4
+  valleyShift: 9.6
   valleyAverageIncline: 0.32
   valleySubtractIncline: 0.47
   floorHeight: 0.3
-  speed: 1
+  speed: 0.2
   testValuesRealtime: 0
   visualizeVerts: 1
   vertVisualizer: {fileID: 1827749026401279967, guid: 6779f14f670ab2242bd017c129f79740,
     type: 3}
-  vertScale: 0.056
+  vertScale: 4.28
   visualizeLines: 1
   lineVisualizer: {fileID: 5953347138619793781, guid: 7e4b5cada8916e94aaa13936c9c2ee67,
     type: 3}
-  lineThickness: 0.0148
+  lineThickness: 0.79
+  combinedMeshContainer: {fileID: 7670066823182942731, guid: 95b517ef26870e94a8810427c7eca9c5,
+    type: 3}
