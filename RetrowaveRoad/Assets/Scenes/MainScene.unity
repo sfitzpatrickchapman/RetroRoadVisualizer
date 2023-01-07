@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2.1017368, g: 0.529001, b: 3.2834573, a: 1}
+  m_IndirectSpecularColor: {r: 2.0760992, g: 0.51717186, b: 2.9912138, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -203,8 +203,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.21176471, g: 0.22352941, b: 0.50980395, a: 1}
-  m_Intensity: 285
+  m_Color: {r: 0.25643137, g: 0.26643294, b: 0.50980395, a: 1}
+  m_Intensity: 400
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 285
+  m_Intensity: 400
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -666,12 +666,33 @@ PrefabInstance:
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
       propertyPath: speed
-      value: 2
+      value: 9.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: combineSize
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
       propertyPath: lineThickness
       value: 0.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: combinedMeshGO
+      value: 
+      objectReference: {fileID: 7670066823182942731, guid: 95b517ef26870e94a8810427c7eca9c5,
+        type: 3}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: visualizeLines
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: visualizeVerts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343485, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}

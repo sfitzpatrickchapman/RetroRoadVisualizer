@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8163559009976046850}
   - component: {fileID: 7708727443564080167}
   - component: {fileID: 5247186056805372983}
-  - component: {fileID: 6537015761419622876}
   m_Layer: 0
   m_Name: LineViz
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6537015761419622876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5953347138619793781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fe7cb929dde4f544bd07c1902f790cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnabled: 0

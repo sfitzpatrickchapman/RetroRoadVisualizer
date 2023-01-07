@@ -35,14 +35,15 @@ public class TerrainGenerator : MonoBehaviour
     [Range(0.5f, 2.5f)] public float lineThickness = 1f;
 
     [Header("Mesh Combine")]
-    public GameObject combinedMeshContainer;
+    public GameObject combinedMeshGO;
+    private int combineSize = 250;
 
     private Mesh mesh;
     private List<Vector3> vertices;
     private List<int> triangles;
     private GameObject vertSpheres;
     private GameObject lineCylinders;
-    private GameObject combinedSpheres;
+    private GameObject combinedMeshes;
     private List<CombineInstance[]> combineInstances;
 
     private int vert;
@@ -52,16 +53,13 @@ public class TerrainGenerator : MonoBehaviour
 
     /* TODO:
      * 
+     * Fix terrain generation bug when z reaches around 1300
+     * -The new triangles of the mesh seem to snap to mesh starting points
      * Make terrain receive emission and not shadows
-     * -Optimize:
-     *   -Add newly generated objects to batches at runtime
-     *   -Delay mesh spawning
-     * -Add wireframe lines
-     * -Adjust terrain shader
      * -Re-color
-     * -Finishing touches such as: air particles, fog, vert flicker, etc.
+     * -Air particles
      * -Clean up code
-     * -Clean with chat GPT
+     * -Clean with chat GPT?
      * -Finalize code
      * 
      */
@@ -91,10 +89,10 @@ public class TerrainGenerator : MonoBehaviour
         lineCylinders.isStatic = true;
 
         // Create child GO for combined meshes
-        //combinedSpheres = new GameObject();
-        //combinedSpheres.name = "CombinedVertices";
-        //combinedSpheres.transform.parent = transform;
-        //combinedSpheres.isStatic = true;
+        combinedMeshes = new GameObject();
+        combinedMeshes.name = "CombinedMeshes";
+        combinedMeshes.transform.parent = transform;
+        combinedMeshes.isStatic = true;
 
         // Init mesh
         mesh = new Mesh();
@@ -126,6 +124,8 @@ public class TerrainGenerator : MonoBehaviour
         }
 
         UpdateMesh();
+        UpdateMeshCombineQueue(vertSpheres);
+        UpdateMeshCombineQueue(lineCylinders);
     }
 
     void InitTerrain()
@@ -154,15 +154,10 @@ public class TerrainGenerator : MonoBehaviour
 
         // Combine meshes to reduce batches
         if (visualizeVerts)
-        {
-            CombineMeshes(vertSpheres);
-            vertSpheres.SetActive(false);
-        }
+            CombineInitMeshes(vertSpheres);
+
         if (visualizeLines)
-        {
-            CombineMeshes(lineCylinders);
-            lineCylinders.SetActive(false);
-        }
+            CombineInitMeshes(lineCylinders);
 
         // GENERATE TRIS ---
         triangles = new List<int>();
@@ -195,6 +190,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             float y = CalculateHeight(x, backVertZPos);
             Vector3 newPos = new Vector3(x, y, backVertZPos);
+
             vertices.Add(newPos);
 
             if (visualizeVerts)
@@ -296,40 +292,52 @@ public class TerrainGenerator : MonoBehaviour
         // Reference: https://www.youtube.com/watch?v=K-Nckj9tppM
     }
 
-    void CombineMeshes(GameObject parent)
+    void CombineInitMeshes(GameObject parent)
     {
         // CREATE LIST OF COMBINE INSTANCES =======================================================
         MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
 
         combineInstances = new List<CombineInstance[]>();
-        CombineInstance[] curCombine = new CombineInstance[1000];
+        CombineInstance[] curCombine = new CombineInstance[combineSize];
 
+        // Create combines of size (combineSize) and add to list
         int meshesLeft = meshFilters.Length;
-        int i = 0;
-        while (meshesLeft > 1000)
+        int itr = 0;
+        while (meshesLeft > combineSize)
         {
-            for (int j = 0; j < 1000; j++)
+            for (int i = 0; i < combineSize; i++)
             {
-                curCombine[j].mesh = meshFilters[i].sharedMesh;
-                curCombine[j].transform = meshFilters[i + j].transform.localToWorldMatrix;
+                curCombine[i].mesh = meshFilters[itr].sharedMesh;
+                curCombine[i].transform = meshFilters[itr + i].transform.localToWorldMatrix;
             }
 
             combineInstances.Add(curCombine);
-            curCombine = new CombineInstance[1000]; //reset
+            curCombine = new CombineInstance[combineSize]; //reset
 
-            meshesLeft -= 1000;
-            i += 1000;
+            meshesLeft -= combineSize;
+            itr += combineSize;
         }
 
-        // CREATE COMBINED MESHES WITH COMBINE INSTANCES ==========================================
-        for (int k = 0; k < combineInstances.Count; k++)
+        // Create combine of leftover meshes and add to list
+        // TODO: This would be cleaner if covered in the prior loop
+        CombineInstance[] leftoverCombine = new CombineInstance[meshesLeft];
+        for (int i = 0; i < meshesLeft; i++)
         {
-            GameObject newCombine = Instantiate(combinedMeshContainer);
+            leftoverCombine[i].mesh = meshFilters[i].sharedMesh;
+            leftoverCombine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+        }
+        combineInstances.Add(leftoverCombine);
 
-            newCombine.name = "CombinedMesh_" + k;
-            //newCombine.transform.parent = combinedSpheres.transform;
+
+        // CREATE COMBINED MESHES WITH COMBINE INSTANCES ==========================================
+        for (int i = 0; i < combineInstances.Count; i++)
+        {
+            GameObject newCombine = Instantiate(combinedMeshGO);
+            newCombine.name = "CombinedInitMesh";
+            newCombine.transform.parent = combinedMeshes.transform;
+
             newCombine.GetComponent<MeshFilter>().mesh = new Mesh();
-            newCombine.GetComponent<MeshFilter>().mesh.CombineMeshes(combineInstances[k]);
+            newCombine.GetComponent<MeshFilter>().mesh.CombineMeshes(combineInstances[i]);
             newCombine.GetComponent<MeshRenderer>().material = 
                 parent.transform.GetChild(0).GetComponent<MeshRenderer>().material; 
             newCombine.SetActive(true);
@@ -338,5 +346,49 @@ public class TerrainGenerator : MonoBehaviour
             newCombine.transform.rotation = Quaternion.identity;
             newCombine.transform.position = Vector3.zero;
         }
+
+        // Delete all original mesh gameobjects
+        foreach (Transform child in parent.transform)
+            Destroy(child.gameObject);
+    }
+
+    void UpdateMeshCombineQueue(GameObject parent)
+    {
+        // If enough child meshes in queue, combine and delete children
+        if (parent.GetComponentsInChildren<MeshFilter>().Length >= combineSize)
+        {
+            CombineQueuedMesh(parent);
+
+            foreach (Transform child in parent.transform)
+                Destroy(child.gameObject);
+        }
+    }
+
+    void CombineQueuedMesh(GameObject parent)
+    {
+        // CREATE LIST OF COMBINE INSTANCES =======================================================
+        MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
+        CombineInstance[] curCombine = new CombineInstance[combineSize];
+
+        for (int i = 0; i < combineSize; i++)
+        {
+            curCombine[i].mesh = meshFilters[i].sharedMesh;
+            curCombine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+        }
+
+        // CREATE COMBINED MESHES WITH COMBINE INSTANCE ===========================================
+        GameObject newCombine = Instantiate(combinedMeshGO);
+        newCombine.transform.parent = combinedMeshes.transform;
+        newCombine.name = "CombinedRuntimeMesh";
+
+        newCombine.GetComponent<MeshFilter>().mesh = new Mesh();
+        newCombine.GetComponent<MeshFilter>().mesh.CombineMeshes(curCombine);
+        newCombine.GetComponent<MeshRenderer>().material =
+            parent.transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        newCombine.SetActive(true);
+
+        newCombine.transform.localScale = Vector3.one;
+        newCombine.transform.rotation = Quaternion.identity;
+        newCombine.transform.position = Vector3.zero;
     }
 }
