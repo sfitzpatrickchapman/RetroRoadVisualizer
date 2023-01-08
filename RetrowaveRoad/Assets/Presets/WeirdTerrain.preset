@@ -6,7 +6,7 @@ Preset:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MellowTerrain
+  m_Name: WeirdTerrain
   m_TargetType:
     m_NativeTypeID: 114
     m_ManagedTypePPtr: {fileID: 11500000, guid: ec308248d12abce4db1a5ef596210f45,
@@ -35,31 +35,31 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: scale
-    value: 0.265
+    value: 0.048
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: height
-    value: 1.47
+    value: 2.58
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: sharpness
-    value: 4.97
+    value: 10
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: valleyShift
-    value: 6.3
+    value: 1.15
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: valleyAverageIncline
-    value: 0.6
+    value: 3
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: valleySubtractIncline
-    value: 3.03
+    value: 9
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: floorHeight
-    value: 0.6
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: testValuesRealtime
@@ -76,7 +76,7 @@ Preset:
       type: 3}
   - target: {fileID: 0}
     propertyPath: vertScale
-    value: 2.65
+    value: 2.04
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: visualizeLines

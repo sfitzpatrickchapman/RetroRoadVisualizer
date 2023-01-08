@@ -19,9 +19,8 @@ public class TerrainGenerator : MonoBehaviour
     [Range(1f, 10f)] public float sharpness = 3f;
     [Range(-20f, 20f)] public float valleyShift = 7.1f;
     [Range(0.01f, 3f)] public float valleyAverageIncline = 0.4f;
-    [Range(0.01f, 10f)] public float valleySubtractIncline = 1.3f;
+    [Range(0.01f, 100f)] public float valleySubtractIncline = 1.3f;
     [Range(0f, 25f)] public float floorHeight = 1f;
-    [Range(0f, 50f)] public float speed = 5f;
     public bool testValuesRealtime = false;
 
     [Header("Vertex Properties")]
@@ -71,7 +70,7 @@ public class TerrainGenerator : MonoBehaviour
         if (testValuesRealtime)
         {
             Debug.Log("TESTING VALUES - Visualizers disabled and speed set to 0.");
-            speed = 0;
+            CameraController.m_instance.speed = 0;
             visualizeVerts = false;
             visualizeLines = false;
         }
@@ -106,11 +105,6 @@ public class TerrainGenerator : MonoBehaviour
     {
         if (testValuesRealtime)
             InitTerrain(); //ONLY USE THIS IN UPDATE FOR TESTING VARS
-
-        // TRANSFORM CAMERA (fowards) ---
-        Vector3 camPos = Camera.main.transform.position;
-        camPos.z += Time.deltaTime * speed;
-        Camera.main.transform.position = camPos;
 
         // GENERATE/DEGENERATE TERRAIN ---
         // If the camera is 5 in front of cur vert on z-axis

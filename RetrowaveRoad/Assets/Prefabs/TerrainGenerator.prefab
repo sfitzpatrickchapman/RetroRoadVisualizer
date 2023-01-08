@@ -98,22 +98,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSize: 50
   zSize: 200
-  scale: 0.399
-  height: 3.27
-  sharpness: 2.62
-  valleyShift: 9.6
-  valleyAverageIncline: 0.32
-  valleySubtractIncline: 0.47
-  floorHeight: 0.3
-  speed: 0.2
+  scale: 0.048
+  height: 2.58
+  sharpness: 10
+  valleyShift: 1.15
+  valleyAverageIncline: 3
+  valleySubtractIncline: 9
+  floorHeight: 0
   testValuesRealtime: 0
   visualizeVerts: 1
   vertVisualizer: {fileID: 1827749026401279967, guid: 6779f14f670ab2242bd017c129f79740,
     type: 3}
-  vertScale: 4.28
+  vertScale: 2.04
   visualizeLines: 1
   lineVisualizer: {fileID: 5953347138619793781, guid: 7e4b5cada8916e94aaa13936c9c2ee67,
     type: 3}
-  lineThickness: 0.79
-  combinedMeshContainer: {fileID: 7670066823182942731, guid: 95b517ef26870e94a8810427c7eca9c5,
+  lineThickness: 0.7
+  combinedMeshGO: {fileID: 7670066823182942731, guid: 95b517ef26870e94a8810427c7eca9c5,
     type: 3}
