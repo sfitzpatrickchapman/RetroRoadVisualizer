@@ -5,6 +5,7 @@
 The goal of this personal project was to create a Unity 3D (HDRP) parallel of a looping retro-themed Blender animation. The specific tutorial by Ducky 3D can be viewed [here](https://www.youtube.com/watch?v=hnLsktA4gmY). The goal was to create a visualizer that is just as aesthetically pleasing, while having game engine capabilities such as procedural & configurable terrain generation, runtime capabilties, ray-tracing, and most importantly, scripting potential.
 
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_720p.gif)
+
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_Bare_720p.gif)
 
 There are many possiblities that can make this project more interesting. Some future goals may be to:  
