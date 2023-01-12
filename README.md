@@ -3,10 +3,10 @@
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_BigSharp.png)
 
 ----
-The goal of this personal project was to create a Unity 3D (HDRP) parallel of a looping retro-themed Blender animation. The specific tutorial by Ducky 3D can be viewed [here](https://www.youtube.com/watch?v=hnLsktA4gmY). The goal was to create a visualizer that is just as aesthetically pleasing, while having game engine capabilities such as procedural & configurable terrain generation, runtime capabilties, ray-tracing, and most importantly, scripting potential.<br>
+The goal of this personal project was to create a Unity 3D (HDRP) parallel of a looping retro-themed Blender animation. The specific tutorial by Ducky 3D can be viewed [here](https://www.youtube.com/watch?v=hnLsktA4gmY). The goal was to create a visualizer that is just as aesthetically pleasing, while having game engine capabilities such as procedural & configurable terrain generation, runtime capabilties, ray-tracing, and most importantly, scripting potential.<br><br><br>
 
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_720p.gif)
-![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_Bare_720p.gif)<br>
+![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_Bare_720p.gif)<br><br><br>
 
 There are many possiblities that can make this project more interesting. Some future goals may be to:  
 * Add mutating/randomized terrain generation as the camera travels through the landscape. This would make the visualizer intruiging for longer periods of time.
