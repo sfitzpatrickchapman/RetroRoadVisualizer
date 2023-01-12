@@ -3,7 +3,7 @@
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_BigSharp.png)
 
 ----
-The goal of this personal project was to create a Unity 3D (HDRP) parallel of a looping retro-themed Blender animation by Ducky 3D which can be viewed [here](https://www.youtube.com/watch?v=hnLsktA4gmY). The goal was to create a visualizer that is just as aesthetically pleasing, while having game engine capabilities such as procedural & configurable terrain generation, runtime capabilties, ray-tracing, and most importantly, scripting potential.<br><br>
+The goal of this personal project was to create a Unity 3D (HDRP) parallel of a [retro-themed Blender animation](https://www.youtube.com/watch?v=hnLsktA4gmY) created by Ducky 3D. The goal was to create a visualizer that is just as aesthetically pleasing, while having game engine capabilities such as procedural & configurable terrain generation, runtime capabilties, ray-tracing, and most importantly, scripting potential.<br><br>
 
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_720p.gif)
 ![](https://github.com/sfitzpatrickchapman/RetroRoadVisualizer/blob/main/DemoMedia/RR_Bare_720p.gif)<br><br>
@@ -21,7 +21,8 @@ There are many possiblities that can make this project more interesting. Some fu
 2. Open the '/RetrowaveRoad' project folder with Unity 2021.3.14f1.
 3. Make sure HDRP is updated and working.
 3. Make sure the 'MainScene' is selected under '/Assets/Scenes'. If you have a slower machine, you may want to select the 'BareScene'.
-4. Press play to run.
+4. Make sure the materials in 'Assets/Materials' have valid shaders selected in the Inspector. The recommended shaders are in the '/Assets/Shaders' folder.
+5. Press play to run.
 
 * To change the speed of the camera, select the 'Main Camera' in the Hierarchy and toggle the speed of the 'CameraController' script component in the Inspector.
 * To change the properties of the terrain, select 'LandscapeGenerator' in the Hierarchy and change the values of the 'TerrainGenerator' script component in the Inspector. Note that terrain setting presets can be selected by clicking the slider icon at the top of the component.
