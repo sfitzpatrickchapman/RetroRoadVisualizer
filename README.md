@@ -15,7 +15,7 @@ There are many possiblities that can make this project more interesting. Some fu
 * Add new models or assets such as a retro themed car to create a focal point in the visualizer.
 * Make the terrain generation randomly turn and make the visualizer into a driving game.
 
-## Getting started
+## Getting Started
 
 1. Pull this repository.
 2. Open the '/RetrowaveRoad' project folder with Unity 2021.3.14f1.
