@@ -5,15 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
-    public static CameraController m_instance;
-
-    [Range(0f, 50f)] public float speed = 5f;
-
-
-    void Start()
-    {
-        m_instance = this; 
-    }
+    [Range(0f, 25f)] public float speed = 5f;
 
     void Update()
     {

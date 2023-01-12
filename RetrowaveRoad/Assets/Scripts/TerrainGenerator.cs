@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -23,19 +24,17 @@ public class TerrainGenerator : MonoBehaviour
     [Range(0f, 25f)] public float floorHeight = 1f;
     public bool testValuesRealtime = false;
 
-    [Header("Vertex Properties")]
+    [Header("Wireframe Properties")]
     public bool visualizeVerts = false;
     public GameObject vertVisualizer;
     [Range(0.5f, 5f)] public float vertScale = 5f;
 
-    [Header("Line Properties")]
     public bool visualizeLines = false;
     public GameObject lineVisualizer;
     [Range(0.5f, 2.5f)] public float lineThickness = 1f;
 
-    [Header("Mesh Combine")]
     public GameObject combinedMeshGO;
-    private int combineSize = 250;
+    private readonly int combineSize = 250;
 
     private Mesh mesh;
     private List<Vector3> vertices;
@@ -50,48 +49,37 @@ public class TerrainGenerator : MonoBehaviour
     private int frontVertZPos;
 
 
-    /* TODO:
-     * 
-     * Fix terrain generation bug when z reaches around 1300
-     * -The new triangles of the mesh seem to snap to mesh starting points
-     * Make terrain receive emission and not shadows
-     * -Re-color
-     * -Air particles
-     * -Clean up code
-     * -Clean with chat GPT?
-     * -Finalize code
-     * 
-     */
-
-
     void Start()
     {
-        // Prevent terrain from moving if in testing mode
+        // If testing mode is enabled, set camera speed to 0 and disable wireframe
         if (testValuesRealtime)
         {
-            Debug.Log("TESTING VALUES - Visualizers disabled and speed set to 0.");
-            CameraController.m_instance.speed = 0;
+            Debug.Log("TESTING VALUES - Wireframe disabled and speed set to 0.");
+            //CameraController.m_instance.speed = 0;
+            Camera.main.GetComponent<CameraController>().enabled = false;
             visualizeVerts = false;
             visualizeLines = false;
         }
+        else
+        {
+            // Create child GO for grandparent wireframe verts
+            vertSpheres = new GameObject();
+            vertSpheres.name = "Vertices";
+            vertSpheres.transform.parent = transform;
+            vertSpheres.isStatic = true;
 
-        // Create child GO for grandparent vert spheres
-        vertSpheres = new GameObject();
-        vertSpheres.name = "Vertices";
-        vertSpheres.transform.parent = transform;
-        vertSpheres.isStatic = true;
+            // Create child GO for grandparent wireframe lines
+            lineCylinders = new GameObject();
+            lineCylinders.name = "Lines";
+            lineCylinders.transform.parent = transform;
+            lineCylinders.isStatic = true;
 
-        // Create child GO for grandparent line cylinders
-        lineCylinders = new GameObject();
-        lineCylinders.name = "Lines";
-        lineCylinders.transform.parent = transform;
-        lineCylinders.isStatic = true;
-
-        // Create child GO for combined meshes
-        combinedMeshes = new GameObject();
-        combinedMeshes.name = "CombinedMeshes";
-        combinedMeshes.transform.parent = transform;
-        combinedMeshes.isStatic = true;
+            // Create child GO for combined wireframe meshes
+            combinedMeshes = new GameObject();
+            combinedMeshes.name = "CombinedMeshes";
+            combinedMeshes.transform.parent = transform;
+            combinedMeshes.isStatic = true;
+        }
 
         // Init mesh
         mesh = new Mesh();
@@ -117,9 +105,14 @@ public class TerrainGenerator : MonoBehaviour
             frontVertZPos += xSize + 1;
         }
 
+        // Update wireframe meshes combine queue (possibly combine)
+        if (!testValuesRealtime)
+        {
+            UpdateCombineQueue(vertSpheres);
+            UpdateCombineQueue(lineCylinders);
+        }
+
         UpdateMesh();
-        UpdateMeshCombineQueue(vertSpheres);
-        UpdateMeshCombineQueue(lineCylinders);
     }
 
     void InitTerrain()
@@ -146,13 +139,6 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
 
-        // Combine meshes to reduce batches
-        if (visualizeVerts)
-            CombineInitMeshes(vertSpheres);
-
-        if (visualizeLines)
-            CombineInitMeshes(lineCylinders);
-
         // GENERATE TRIS ---
         triangles = new List<int>();
 
@@ -172,6 +158,14 @@ public class TerrainGenerator : MonoBehaviour
             }
             vert++;
         }
+
+        // COMBINE WIREFRAME MESHES ---
+        if (visualizeVerts)
+            CombineInitMeshes(vertSpheres);
+
+        if (visualizeLines)
+            CombineInitMeshes(lineCylinders);
+
 
         UpdateMesh();
     }
@@ -246,11 +240,11 @@ public class TerrainGenerator : MonoBehaviour
         curHeight *= height;
         curHeight = Mathf.Pow(curHeight, sharpness);
 
-        // Slightly indent valley (using parabola)
+        // Partially indent a valley (average w/ parabola)
         float valleyHeight = valleyAverageIncline * Mathf.Pow((x * scale) - valleyShift, 2);
         curHeight = curHeight > valleyHeight ? (valleyHeight + curHeight) / 2f : curHeight;
 
-        // Fully indent valley (using parabola)
+        // Fully indent a valley (subtracting parabola)
         valleyHeight = valleySubtractIncline * Mathf.Pow((x * scale) - valleyShift, 2);
         curHeight = curHeight > valleyHeight ? valleyHeight : curHeight;
 
@@ -281,16 +275,14 @@ public class TerrainGenerator : MonoBehaviour
 
         Vector3 rotationDirection = posA - posB;
         curLine.transform.up = rotationDirection;
-        //curLine.transform.forward = rotationDirection;
 
         // Reference: https://www.youtube.com/watch?v=K-Nckj9tppM
     }
 
     void CombineInitMeshes(GameObject parent)
     {
-        // CREATE LIST OF COMBINE INSTANCES =======================================================
+        // CREATE LIST OF COMBINE INSTANCES ---
         MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
-
         combineInstances = new List<CombineInstance[]>();
         CombineInstance[] curCombine = new CombineInstance[combineSize];
 
@@ -323,7 +315,7 @@ public class TerrainGenerator : MonoBehaviour
         combineInstances.Add(leftoverCombine);
 
 
-        // CREATE COMBINED MESHES WITH COMBINE INSTANCES ==========================================
+        // CREATE COMBINED MESHES WITH COMBINE INSTANCES ---
         for (int i = 0; i < combineInstances.Count; i++)
         {
             GameObject newCombine = Instantiate(combinedMeshGO);
@@ -336,6 +328,7 @@ public class TerrainGenerator : MonoBehaviour
                 parent.transform.GetChild(0).GetComponent<MeshRenderer>().material; 
             newCombine.SetActive(true);
 
+            // Reset transform
             newCombine.transform.localScale = Vector3.one;
             newCombine.transform.rotation = Quaternion.identity;
             newCombine.transform.position = Vector3.zero;
@@ -346,7 +339,7 @@ public class TerrainGenerator : MonoBehaviour
             Destroy(child.gameObject);
     }
 
-    void UpdateMeshCombineQueue(GameObject parent)
+    void UpdateCombineQueue(GameObject parent)
     {
         // If enough child meshes in queue, combine and delete children
         if (parent.GetComponentsInChildren<MeshFilter>().Length >= combineSize)
@@ -360,7 +353,7 @@ public class TerrainGenerator : MonoBehaviour
 
     void CombineQueuedMesh(GameObject parent)
     {
-        // CREATE LIST OF COMBINE INSTANCES =======================================================
+        // CREATE LIST OF COMBINE INSTANCES ---
         MeshFilter[] meshFilters = parent.GetComponentsInChildren<MeshFilter>();
         CombineInstance[] curCombine = new CombineInstance[combineSize];
 
@@ -370,7 +363,7 @@ public class TerrainGenerator : MonoBehaviour
             curCombine[i].transform = meshFilters[i].transform.localToWorldMatrix;
         }
 
-        // CREATE COMBINED MESHES WITH COMBINE INSTANCE ===========================================
+        // CREATE COMBINED MESHES WITH COMBINE INSTANCE ---
         GameObject newCombine = Instantiate(combinedMeshGO);
         newCombine.transform.parent = combinedMeshes.transform;
         newCombine.name = "CombinedRuntimeMesh";
@@ -381,6 +374,7 @@ public class TerrainGenerator : MonoBehaviour
             parent.transform.GetChild(0).GetComponent<MeshRenderer>().material;
         newCombine.SetActive(true);
 
+        // Reset transform
         newCombine.transform.localScale = Vector3.one;
         newCombine.transform.rotation = Quaternion.identity;
         newCombine.transform.position = Vector3.zero;

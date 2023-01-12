@@ -50,10 +50,10 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 5
+      - m_Value: 4
         m_Name: Max Dust Size
         m_Overridden: 1
-      - m_Value: 3
+      - m_Value: 2
         m_Name: Min Dust Size
         m_Overridden: 1
       - m_Value: 100

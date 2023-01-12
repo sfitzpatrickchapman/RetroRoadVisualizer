@@ -670,7 +670,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.114
+    m_Value: 0.257
   m_MaxSamples:
     m_OverrideState: 1
     m_Value: 12

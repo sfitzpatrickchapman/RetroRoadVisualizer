@@ -6,26 +6,25 @@ using UnityEngine.VFX;
 public class ParticleSpawner : MonoBehaviour
 {
     public GameObject particlesPrefab;
+
     private bool readyToSpawn = true;
     private int curFrame = 0;
     private int prevSpawnFrame;
-
-    void Start()
-    {
-        SpawnParticles();
-    }
+    private readonly int spawnFrequency = 50;
 
     void Update()
     {
-        //Debug.Log((int)Camera.main.transform.position.z + 50);
-
-        if ((int)Camera.main.transform.position.z % 50 == 0)
+        if ((int)Camera.main.transform.position.z % spawnFrequency == 0)
         {
             if (readyToSpawn)
             {
                 SpawnParticles();
                 readyToSpawn = false;
                 prevSpawnFrame = curFrame;
+
+                // Delete old particle effects
+                if (transform.childCount > 2)
+                    Destroy(GetComponent<Transform>().GetChild(0).gameObject);
             }
         }
 
@@ -37,14 +36,13 @@ public class ParticleSpawner : MonoBehaviour
 
     void SpawnParticles()
     {
-        Debug.Log("Spawning particle system...");
         GameObject curParticles = Instantiate(particlesPrefab);
         curParticles.transform.parent = transform;
         curParticles.SetActive(true);
 
-        // Transform to camera z position
+        // Transform to camera z position plus offset
         Vector3 newParticlesPos = curParticles.transform.position;
-        newParticlesPos.z = Camera.main.transform.position.z;
+        newParticlesPos.z = Camera.main.transform.position.z + spawnFrequency;
         curParticles.transform.position = newParticlesPos;
     }
 }

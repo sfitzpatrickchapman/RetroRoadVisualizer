@@ -223,7 +223,7 @@ PrefabInstance:
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
       propertyPath: testValuesRealtime
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343485, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 966521358}
   - component: {fileID: 966521357}
   - component: {fileID: 966521360}
+  - component: {fileID: 966521361}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -442,6 +443,19 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!114 &966521361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966521356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60edad4f78628aa42831a0b1e5b9b852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!1 &1057608296
 GameObject:
   m_ObjectHideFlags: 0
