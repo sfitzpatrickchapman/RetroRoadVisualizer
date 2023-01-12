@@ -27,7 +27,7 @@ There are many possiblities that can make this project more interesting. Some fu
 * To change the speed of the camera, select the 'Main Camera' in the Hierarchy and toggle the speed of the 'CameraController' script component in the Inspector.
 * To change the properties of the terrain, select 'LandscapeGenerator' in the Hierarchy and change the values of the 'TerrainGenerator' script component in the Inspector. Note that terrain setting presets can be selected by clicking the slider icon at the top of the component.
 * To view changing terrain values during runtime, enable 'Test Values Realtime' under the 'Terrain Properties'. Note that this will stop camera movement and disable the wireframe.
-* Contact scott@fitzpatrick.net for any questions or a higher quality HDRI.
+* Contact scott@fitzpatrick.net for any questions or for a higher quality HDRI.
 
 ## References
 
