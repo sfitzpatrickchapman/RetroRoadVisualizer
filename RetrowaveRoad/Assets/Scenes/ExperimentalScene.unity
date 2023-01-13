@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.11768, g: 324.74365, b: 429.81006, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,13 +202,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
+      propertyPath: scale
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
       propertyPath: speed
       value: 3.78
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
+      propertyPath: xSize
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
       propertyPath: zSize
-      value: 150
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: height
+      value: 4.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: sharpness
+      value: 2.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: floorHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: valleyShift
+      value: 8.8
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
@@ -224,6 +254,16 @@ PrefabInstance:
         type: 3}
       propertyPath: testValuesRealtime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: valleyAverageIncline
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761458534462343484, guid: 15ecbb43f0d106944baa66c794847481,
+        type: 3}
+      propertyPath: valleySubtractIncline
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5761458534462343485, guid: 15ecbb43f0d106944baa66c794847481,
         type: 3}
@@ -310,14 +350,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 966521356}
-  m_LocalRotation: {x: -0.078459024, y: 0, z: 0, w: 0.99691737}
-  m_LocalPosition: {x: 23.5, y: 1, z: 0}
+  m_LocalRotation: {x: 0.006981222, y: 0, z: 0, w: 0.9999757}
+  m_LocalPosition: {x: 146.5, y: 17.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -9, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.8, y: 0, z: 0}
 --- !u!114 &966521360
 MonoBehaviour:
   m_ObjectHideFlags: 0

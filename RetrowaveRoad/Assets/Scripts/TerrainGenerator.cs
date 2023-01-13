@@ -102,10 +102,10 @@ public class TerrainGenerator : MonoBehaviour
             DegenerateTerrain();
 
             backVertZPos++;
-            frontVertZPos += xSize + 1;
+            frontVertZPos++;
         }
 
-        // Update wireframe meshes combine queue (possibly combine)
+        // Update wireframe meshes combine queue(possibly combine)
         if (!testValuesRealtime)
         {
             UpdateCombineQueue(vertSpheres);
@@ -172,11 +172,13 @@ public class TerrainGenerator : MonoBehaviour
 
     void GenerateNewTerrain()
     {
-        // ADD NEW VERTS
+        // ADD NEW VERTS ---
+        float y;
         Vector3 prevPos = Vector3.zero;
+
         for (int x = 0; x <= xSize; x++)
         {
-            float y = CalculateHeight(x, backVertZPos);
+            y = CalculateHeight(x, backVertZPos);
             Vector3 newPos = new Vector3(x, y, backVertZPos);
 
             vertices.Add(newPos);
@@ -189,36 +191,13 @@ public class TerrainGenerator : MonoBehaviour
 
             prevPos = newPos;
         }
-
-        // ADD NEW TRIS ---
-        for (int x = 0; x < xSize; x++)
-        {
-            triangles.Add(vert + 0);
-            triangles.Add(vert + xSize + 1);
-            triangles.Add(vert + 1);
-            triangles.Add(vert + 1);
-            triangles.Add(vert + xSize + 1);
-            triangles.Add(vert + xSize + 2);
-
-            vert++;
-        }
-
-        vert++;
     }
 
     void DegenerateTerrain()
     {
-        // DELETE FRONT TRIS ---
-        for (int x = 0; x < xSize * 6; x++)
-        {
-            triangles.RemoveAt(0);
-        }
-
-        //// TODO: Gracefully delete verts
-        //for (int x = 0; x <= xSize; x++)
-        //{
-        //    vertices.RemoveAt(0);
-        //}
+        // DELETE OLD VERTS ---
+        for (int x = 0; x <= xSize; x++)
+            vertices.RemoveAt(0);
     }
 
     void UpdateMesh()
