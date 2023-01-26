@@ -20,8 +20,9 @@ There are many possiblities that can make this project more interesting. Some fu
 2. Open the `/RetrowaveRoad` project folder with Unity 2021.3.14f1.
 3. Make sure HDRP is updated and working.
 3. Make sure the `MainScene` is selected under `/Assets/Scenes`. If you have a slower machine, you may want to select the `BareScene`.
-4. Make sure the materials in `Assets/Materials` have valid shaders selected in the Inspector. The recommended shaders are in the `/Assets/Shaders` folder.
-5. Press play to run.
+4. Make sure the materials in `/Assets/Materials` have valid shaders selected in the Inspector. The recommended shaders are in the `/Assets/Shaders` folder.
+5. In the Hierarchy, select the `Global Volume` game object which is a child of `Lighting`. Open the `HDRI Sky` dropdown in the `Volume` component in the Inspector. Make sure that an HDRI is selected next to the `Hdri Sky` checkbox.
+6. Press play to run.
 
 * To change the speed of the camera, select the `Main Camera` in the Hierarchy and toggle the speed of the `CameraController` script component in the Inspector.
 * To change the properties of the terrain, select `LandscapeGenerator` in the Hierarchy and change the values of the `TerrainGenerator` script component in the Inspector. Note that terrain setting presets can be selected by clicking the slider icon at the top of the component.
